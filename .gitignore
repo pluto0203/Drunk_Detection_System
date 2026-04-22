@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment variables (NEVER commit secrets)
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Model files (too large for git)
+*.tflite
+*.h5
+*.keras
+*.pb
+*.onnx
+saved_model/
+
+# Data (use DVC or separate storage)
+data/
+*.csv
+!.env.example
+
+# MLflow
+mlruns/
+mlartifacts/
+
+# Outputs
+outputs/
+logs/
+*.log
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Legacy directories (kept for reference during migration)
+# Drunk_Detection_opt/.idea/
+# Drunk_Detection_opt/__pycache__/
+# Drunk_Detection_RasPi/__pycache__/

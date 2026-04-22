@@ -1,0 +1,46 @@
+# Core ML
+tensorflow>=2.13.0
+numpy>=1.24.0
+scikit-learn>=1.3.0
+
+# Computer Vision
+opencv-python>=4.8.0
+mediapipe>=0.10.0
+
+# Data Processing
+pandas>=2.0.0
+Pillow>=10.0.0
+
+# Experiment Tracking
+mlflow>=2.8.0
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Configuration
+pyyaml>=6.0
+python-dotenv>=1.0.0
+
+# Edge Deployment
+# tflite-runtime>=2.13.0  # Uncomment on Raspberry Pi
+
+# Dashboard
+flask>=3.0.0
+
+# Notifications
+python-telegram-bot>=20.0
+
+# Object Detection (data filtering)
+ultralytics>=8.0.0
+
+# --- Phase 6: Advanced ML ---
+# Quantization-Aware Training
+tensorflow-model-optimization>=0.7.0
+
+# Hyperparameter Tuning
+optuna>=3.4.0
+
+# Code Quality
+ruff>=0.1.0
+mypy>=1.7.0

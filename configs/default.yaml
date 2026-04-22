@@ -1,0 +1,100 @@
+# =============================================================================
+# Drunk Detection System — Configuration
+# =============================================================================
+# All hyperparameters and paths are centralized here.
+# Override via CLI arguments or environment variables.
+
+# --- Data ---
+data:
+  img_size: [224, 224]
+  batch_size: 32
+  num_classes: 2
+  class_names: ["Drunk", "Not Drunk"]
+
+# --- Augmentation (Training only) ---
+augmentation:
+  brightness_range: [0.8, 1.2]
+  zoom_range: 0.1
+  width_shift_range: 0.05
+  height_shift_range: 0.05
+  horizontal_flip: false
+  rotation_range: 0
+
+# --- Model ---
+model:
+  backbone: "MobileNetV3Small"
+  weights: "imagenet"
+  dense_units: [128, 64]
+  activation: "swish"
+  dropout_rate: 0.3
+  num_classes: 2
+
+# --- Training Phase 1 (Frozen backbone) ---
+training:
+  epochs: 100
+  learning_rate: 0.0001
+  optimizer: "adam"
+  loss: "categorical_crossentropy"
+  early_stopping_patience: 25
+  checkpoint_monitor: "val_accuracy"
+  checkpoint_mode: "max"
+
+# --- Fine-tuning Phase 2 ---
+finetuning:
+  epochs: 20
+  learning_rate: 0.00001
+  fine_tune_at_layer: 100  # Unfreeze layers after this index
+
+# --- Evaluation ---
+evaluation:
+  threshold: 0.5
+  threshold_range: [0.1, 0.95]
+  threshold_steps: 50
+  grad_cam_layer: "Conv_1"  # Last conv layer in MobileNetV3Small
+
+# --- Edge Deployment ---
+deployment:
+  model_path: "models/DrunkClass_model.tflite"
+  mq3_threshold: 400
+  drunk_detection_seconds: 40
+  frame_interval: 5
+  camera_resolution: [640, 480]
+  confidence_threshold: 0.7
+
+# --- MLflow ---
+mlflow:
+  experiment_name: "drunk-detection"
+  tracking_uri: "./mlruns"
+
+# --- Knowledge Distillation ---
+distillation:
+  temperature: 5.0          # Softmax temperature (higher = softer distributions)
+  alpha: 0.3                # Hard label weight (1-alpha = soft label weight)
+  student_type: "tiny"      # Student architecture: 'tiny' (~150K params) or 'micro' (~50K)
+  epochs: 50
+  learning_rate: 0.001
+
+# --- Quantization-Aware Training ---
+quantization:
+  qat_epochs: 10            # Few epochs needed (model already trained)
+  qat_learning_rate: 0.00001
+  full_int8: true           # Full INT8 quantization with representative dataset
+  representative_samples: 100
+
+# --- Hyperparameter Tuning (Optuna) ---
+tuning:
+  n_trials: 30
+  max_epochs_per_trial: 20
+  sampler: "tpe"            # TPE (Bayesian) or "random"
+  search_space:
+    learning_rate: [0.00001, 0.001]
+    dropout_rate: [0.1, 0.5]
+    dense_units_1: [64, 128, 256]
+    dense_units_2: [32, 64, 128]
+
+# --- Logging ---
+logging:
+  level: "INFO"
+  format: "%(asctime)s | %(name)-20s | %(levelname)-8s | %(message)s"
+  date_format: "%Y-%m-%d %H:%M:%S"
+  log_dir: "logs"
